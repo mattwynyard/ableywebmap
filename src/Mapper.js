@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import './App.css';
 import WebMap from "@arcgis/core/WebMap";
-import { load, project } from "@arcgis/core/geometry/projection";
-import Map from "@arcgis/core/Map";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
 import Home from "@arcgis/core/widgets/Home";
@@ -10,7 +8,7 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Compass from "@arcgis/core/widgets/Compass";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
-import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+import Basemap from "@arcgis/core/Basemap";
 
 function Mapper() {
   const mapRef = useRef(null);
@@ -20,20 +18,26 @@ function Mapper() {
 
             const map = new WebMap({
                 portalItem: { 
-                    id: "2ef6847aa63948238da7df02970ea859"
+                    id: "b8663956ce2a4e8d9631977ac9571ffc"
                 },
-                // spatialReference: {
-                //   wkid: 2193
-                // },
+                spatialReference: {
+                  wkid: 2193
+                },
+            });
+
+            let nzImageryBasemap = new Basemap({
+              portalItem: {
+                id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
+              }
             });
 
             let mapView = new MapView({
                 map,
                 container: mapRef.current,
-                // spatialReference: {
-                //     wkid: 2193
-                //   },
-                center: [ 36.8509, 174.7645],
+                spatialReference: {
+                    wkid: 2193
+                  },
+                
                 zoom: 5,
             });
 
@@ -45,14 +49,16 @@ function Mapper() {
             let compass = new Compass({
                 view: mapView
               });
+
             let layerlist = new LayerList({
                 view: mapView
 
             });
             let basemapToggle = new BasemapToggle({
                 view: mapView,
-                nextBasemap: "satellite"
+                nextBasemap: nzImageryBasemap
               });
+
             let homeWidget = new Home({
             view: mapView
             });
@@ -63,11 +69,17 @@ function Mapper() {
                 },
               });
 
-            
-            
+            // map.when((event) => {
+            //   console.log(event)
+            //   map.add(layer)
+            // });
+            map.watch('loaded', (event) => {
+              console.log(event)
+              map.add(layer)
+            });
 
-            mapView.when((event) => {
-                console.log(event.target);
+            mapView.when(() => {
+                console.log(mapView)
                 mapView.ui.add(homeWidget, "top-left");
                 mapView.ui.add(scalebar, "bottom-right");
                 mapView.ui.add(compass, "top-left");
@@ -75,9 +87,11 @@ function Mapper() {
                 mapView.ui.add(basemapToggle, "bottom-left");
             });
 
-            map.when(() => {
-              map.add(layer)
+            mapView.on("click", (event) => {
+              console.log("click event: ", event.mapPoint);
             });
+
+            
             return () => {
               if(!!mapView) {
                 mapView.destroy();
