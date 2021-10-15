@@ -10,7 +10,7 @@ import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
 import Basemap from "@arcgis/core/Basemap";
 
-function Mapper() {
+function Mapper(props) {
   const mapRef = useRef(null);
 
     useEffect(() => {
@@ -69,12 +69,13 @@ function Mapper() {
                 },
               });
 
-            // map.when((event) => {
-            //   console.log(event)
-            //   map.add(layer)
-            // });
+              map.watch('loading', (event) => {
+                console.log(event)
+                map.add(layer)
+              });
             map.watch('loaded', (event) => {
               console.log(event)
+              props.setLoaded();
               map.add(layer)
             });
 
