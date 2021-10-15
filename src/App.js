@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import Map from "./Map.js";
+import Mapper from "./Mapper.js";
 import CustomNavbar from "./CustomNavbar";
 import {Spinner} from 'react-bootstrap';
 
@@ -9,9 +9,9 @@ function App() {
   return (
     <React.Fragment>
       <CustomNavbar></CustomNavbar>
-      <Map>
+      <Mapper>
         <Spinner></Spinner>
-      </Map>
+      </Mapper>
     </React.Fragment>
         
     

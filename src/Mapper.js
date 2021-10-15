@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import './App.css';
 import WebMap from "@arcgis/core/WebMap";
-// import Map from "@arcgis/core/Map";
+import { load, project } from "@arcgis/core/geometry/projection";
+import Map from "@arcgis/core/Map";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
 import Home from "@arcgis/core/widgets/Home";
@@ -9,26 +10,28 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Compass from "@arcgis/core/widgets/Compass";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
+import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 
-function Map() {
+function Mapper() {
   const mapRef = useRef(null);
 
     useEffect(() => {
         if (mapRef.current) {
-            // const map = new WebMap({
-            //     portalItem: { 
-            //         id: "2ef6847aa63948238da7df02970ea859"
-            //     }
-            // });
+
             const map = new WebMap({
-                basemap: "streets-vector"
+                portalItem: { 
+                    id: "3d58e866fd31441a8c57d13a2e028392"
+                }
             });
 
             const mapView = new MapView({
                 map,
                 container: mapRef.current,
-                center: [ 174.763335, -36.848461],
-                zoom: 13,
+                spatialReference: {
+                    wkid: 2193
+                  },
+                center: [ 1570634.6, 5180148.2],
+                zoom: 18,
             });
 
             let scalebar = new ScaleBar({
@@ -51,7 +54,10 @@ function Map() {
             view: mapView
             });
             let layer = new FeatureLayer({
-                url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Property_Titles/FeatureServer/0"
+                url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Property_Titles/FeatureServer/0",
+                spatialReference: {
+                  wkid: 2193
+                },
               });
 
             mapView.ui.add(homeWidget, "top-left");
@@ -73,4 +79,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default Mapper;
