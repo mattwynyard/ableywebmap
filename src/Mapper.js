@@ -20,18 +20,21 @@ function Mapper() {
 
             const map = new WebMap({
                 portalItem: { 
-                    id: "3d58e866fd31441a8c57d13a2e028392"
-                }
+                    id: "2ef6847aa63948238da7df02970ea859"
+                },
+                // spatialReference: {
+                //   wkid: 2193
+                // },
             });
 
-            const mapView = new MapView({
+            let mapView = new MapView({
                 map,
                 container: mapRef.current,
-                spatialReference: {
-                    wkid: 2193
-                  },
-                center: [ 1570634.6, 5180148.2],
-                zoom: 18,
+                // spatialReference: {
+                //     wkid: 2193
+                //   },
+                center: [ 36.8509, 174.7645],
+                zoom: 5,
             });
 
             let scalebar = new ScaleBar({
@@ -60,16 +63,27 @@ function Mapper() {
                 },
               });
 
-            mapView.ui.add(homeWidget, "top-left");
-            mapView.ui.add(scalebar, "bottom-right");
-            mapView.ui.add(compass, "top-left");
-            mapView.ui.add(layerlist, "top-right");
-            mapView.ui.add(basemapToggle, "bottom-left");
-            map.add(layer)
+            
+            
 
-            mapView.when(() => {
-                console.log("loaded")
+            mapView.when((event) => {
+                console.log(event.target);
+                mapView.ui.add(homeWidget, "top-left");
+                mapView.ui.add(scalebar, "bottom-right");
+                mapView.ui.add(compass, "top-left");
+                mapView.ui.add(layerlist, "top-right");
+                mapView.ui.add(basemapToggle, "bottom-left");
             });
+
+            map.when(() => {
+              map.add(layer)
+            });
+            return () => {
+              if(!!mapView) {
+                mapView.destroy();
+                mapView = null;
+              }
+            }
         }
   }, []);
 
