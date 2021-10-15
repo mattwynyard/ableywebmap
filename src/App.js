@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import React, { useEffect, useRef } from "react";
 import './App.css';
+import WebMap from "@arcgis/core/WebMap";
+import ArcGISMap from "@arcgis/core/Map";
+import MapView from "@arcgis/core/views/MapView";
 
 function App() {
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (mapRef.current) {
+
+      const map = new ArcGISMap({
+        basemap: "gray-vector",
+      });
+
+      const view = new MapView({
+        map,
+        container: mapRef.current,
+        extent: {
+          spatialReference: {
+            wkid: 4326,
+          },
+        },
+      });
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="map" ref={mapRef}>
     </div>
   );
 }
