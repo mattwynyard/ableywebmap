@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import './App.css';
 import Map from "./Map.js";
 import CustomNavbar from "./CustomNavbar";
-import { Fragment } from 'react';
+import {Spinner} from 'react-bootstrap';
 
 function App() {
 
   return (
     <React.Fragment>
       <CustomNavbar></CustomNavbar>
-      <Map></Map>
+      <Map>
+        <Spinner></Spinner>
+      </Map>
     </React.Fragment>
         
     
