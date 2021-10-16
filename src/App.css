@@ -6,7 +6,7 @@
 
 .login{
   position: absolute;
-  right: 5%;
+  right: 2%;
 }
 
 .brand {
@@ -22,6 +22,7 @@
   height: 90%;
   width: 100%;
   z-index: 1;
+  overflow: hidden;
 }
 
 .spinner {
@@ -33,9 +34,8 @@
 
 .footer {
   position: absolute;
-  top: 90%;
-  height: 5%;
+  top: 89%;
+  height: 10%;
   width: 100%;
-  font-size: 12px;
-  
+  font-size: 12px;  
 }

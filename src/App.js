@@ -9,8 +9,8 @@ function App() {
   const [status, setStatus] = useState("Loading");
   const [show, setShow] = useState(true);
   
-  //Eagle Technology, LINZ, StatsNZ, NIWA, Natural Earth, © OpenStreetMap contributors.
-  const copyright = "© Matt Wynyard Ltd. 2021"
+  const copyright = "© Matt Wynyard Ltd. All rights reserved 2021";
+  
   /**
    * Hides spinner when map is loaded, called mapper
    * @param {string} status - The Map load status
