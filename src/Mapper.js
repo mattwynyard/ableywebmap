@@ -132,11 +132,11 @@ function Mapper(props) {
         console.log(event.mapPoint.x);
       });
 
-      // titles.when(() => {
-      //   titles.fields.map((field) => {
-      //     console.log(field.name)
-      //   })
-      // });
+      buildings.when(() => {
+        buildings.fields.map((field) => {
+          console.log(field.name)
+        })
+      });
 
       // mapView.on('pointer-move', (event) => {
       //   let point = mapView.toMap({x: event.x, y: event.y});
