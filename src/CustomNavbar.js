@@ -1,11 +1,11 @@
 import React from "react";
-import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function CustomNavbar() {
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar className="navbar" bg="light" expand="lg">
             <Navbar.Brand href="#home">
                 <img
                 src="logo192.png"

@@ -10,24 +10,23 @@ function App() {
   const [show, setShow] = useState(true);
   
   /**
-   * Hides spinner when map is loaded, called mapper
+   * Callback Hides spinner when map is loaded or error if not, called in mapper
    * @param {string} status - The Map load status
    */
-  const setLoaded = (status) => {
+  const setLoadStatus = (status) => {
     if (status === "loaded") {
       setShow(false);
     } else {
-      console.log(status)
+      setStatus(status);
     }
   }
 
   return (
     <React.Fragment>
       <CustomNavbar 
-        className="navbar"
       />
       <Mapper 
-        setLoaded={setLoaded}
+        setLoadStatus={setLoadStatus}
       />
       <CustomSpinner 
         className="spinner" 

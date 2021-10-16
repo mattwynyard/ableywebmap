@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import './App.css';
-import {buildingPopup, titlePopup} from './Popups.js'
+import {buildingPopup, titlePopup} from './Popups.js';
+import { meanSeaLevelRenderer, buildingsRenderer} from "./Renderers";
 import WebMap from "@arcgis/core/WebMap";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
@@ -10,11 +11,10 @@ import Compass from "@arcgis/core/widgets/Compass";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
 import Basemap from "@arcgis/core/Basemap";
-// import Renderer from "@arcgis/core/renderers/Renderer";
-// import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 
 function Mapper(props) {
   const mapRef = useRef(null);
+  const setStatus = props.setLoadStatus;
 
   useEffect(() => {
     if (mapRef.current) {
@@ -26,21 +26,6 @@ function Mapper(props) {
             wkid: 2193
           },
       });
-
-      let buildingsRenderer = {
-        type: "simple", 
-        symbol: { 
-          type: "simple-fill", 
-        },
-      };
-
-      let meanSeaLevelRenderer = {
-        type: "simple",  
-        symbol: { 
-          type: "simple-line", 
-          color: "green"
-        },
-      };
 
       let nzImageryBasemap = new Basemap({
         portalItem: {
@@ -103,21 +88,15 @@ function Mapper(props) {
         renderer: meanSeaLevelRenderer
       });
 
-      map.watch('loading', () => {
-        console.log(map.loadStatus);
-      });
-
       map.watch('loaded', () => {
-        props.setLoaded(map.loadStatus);
+        setStatus(map.loadStatus);
         map.add(titles, 0);
         map.add(buildings, 2);
         map.add(meanSeaLevel, 1);
-  
       });
 
       map.watch('failed', () => {
-        props.setLoaded(map.loadStatus);
-        console.log("failed")
+        setStatus(map.loadStatus);
       });
 
       mapView.when(() => {
@@ -128,21 +107,6 @@ function Mapper(props) {
           mapView.ui.add(basemapToggle, "bottom-left");
       })
 
-      mapView.on("click", (event) => {
-        console.log(event.mapPoint.x);
-      });
-
-      buildings.when(() => {
-        buildings.fields.map((field) => {
-          console.log(field.name)
-        })
-      });
-
-      // mapView.on('pointer-move', (event) => {
-      //   let point = mapView.toMap({x: event.x, y: event.y});
-      //   console.log(`Easting: ${point.x} Northing: ${point.y}`)
-      // });
-
       return () => {
         if(!!mapView) {
           mapView.destroy();
@@ -150,7 +114,7 @@ function Mapper(props) {
         }
       }
     }
-  }, []);
+  }, [setStatus]);
 
   return (
     <div className="map" ref={mapRef}>
