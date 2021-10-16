@@ -9,97 +9,129 @@ import Compass from "@arcgis/core/widgets/Compass";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
 import Basemap from "@arcgis/core/Basemap";
+import Renderer from "@arcgis/core/renderers/Renderer";
+import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 
 function Mapper(props) {
   const mapRef = useRef(null);
 
-    useEffect(() => {
-        if (mapRef.current) {
+  useEffect(() => {
+    if (mapRef.current) {
+      const map = new WebMap({
+          portalItem: { 
+              id: "b8663956ce2a4e8d9631977ac9571ffc"
+          },
+          spatialReference: {
+            wkid: 2193
+          },
+      });
 
-            const map = new WebMap({
-                portalItem: { 
-                    id: "b8663956ce2a4e8d9631977ac9571ffc"
-                },
-                spatialReference: {
-                  wkid: 2193
-                },
-            });
+      let buildingsRenderer = {
+        type: "simple",  // autocasts as new SimpleRenderer()
+        symbol: { 
+          type: "simple-fill", 
+        },
+      };
 
-            let nzImageryBasemap = new Basemap({
-              portalItem: {
-                id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
-              }
-            });
+      let meanSeaLevelRenderer = {
+        type: "simple",  // autocasts as new SimpleRenderer()
+        symbol: { 
+          type: "simple-line", 
+          color: "green"
+        },
+      };
 
-            let mapView = new MapView({
-                map,
-                container: mapRef.current,
-                spatialReference: {
-                    wkid: 2193
-                  },
-                
-                zoom: 5,
-            });
-
-            let scalebar = new ScaleBar({
-                view: mapView,
-                unit: "metric",
-                style: "ruler"
-            });
-            let compass = new Compass({
-                view: mapView
-              });
-
-            let layerlist = new LayerList({
-                view: mapView
-
-            });
-            let basemapToggle = new BasemapToggle({
-                view: mapView,
-                nextBasemap: nzImageryBasemap
-              });
-
-            let homeWidget = new Home({
-            view: mapView
-            });
-            let layer = new FeatureLayer({
-                url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Property_Titles/FeatureServer/0",
-                spatialReference: {
-                  wkid: 2193
-                },
-              });
-
-              map.watch('loading', (event) => {
-                console.log(event)
-                map.add(layer)
-              });
-            map.watch('loaded', (event) => {
-              console.log(event)
-              props.setLoaded();
-              map.add(layer)
-            });
-
-            mapView.when(() => {
-                console.log(mapView)
-                mapView.ui.add(homeWidget, "top-left");
-                mapView.ui.add(scalebar, "bottom-right");
-                mapView.ui.add(compass, "top-left");
-                mapView.ui.add(layerlist, "top-right");
-                mapView.ui.add(basemapToggle, "bottom-left");
-            });
-
-            mapView.on("click", (event) => {
-              console.log("click event: ", event.mapPoint);
-            });
-
-            
-            return () => {
-              if(!!mapView) {
-                mapView.destroy();
-                mapView = null;
-              }
-            }
+      let nzImageryBasemap = new Basemap({
+        portalItem: {
+          id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
         }
+      });
+
+      let mapView = new MapView({
+          map,
+          container: mapRef.current,
+          spatialReference: {
+              wkid: 2193
+            },            
+          zoom: 8,
+      });
+
+      let scalebar = new ScaleBar({
+          view: mapView,
+          unit: "metric",
+          style: "ruler"
+      });
+      let compass = new Compass({
+          view: mapView
+        });
+      let layerlist = new LayerList({
+          view: mapView
+      });
+      let basemapToggle = new BasemapToggle({
+          view: mapView,
+          nextBasemap: nzImageryBasemap
+        });
+
+      let homeWidget = new Home({
+        view: mapView
+      });
+      let titles = new FeatureLayer({
+          url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Property_Titles/FeatureServer/0",
+          spatialReference: {
+            wkid: 2193
+          },
+        });
+
+      let buildings = new FeatureLayer({
+        url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Building_Outlines/FeatureServer",
+        spatialReference: {
+          wkid: 2193
+        },
+        renderer: buildingsRenderer
+      });
+
+      let meanSeaLevel = new FeatureLayer({
+        url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Coastline_Mean_High_Water/FeatureServer/0",
+        spatialReference: {
+          wkid: 2193
+        },
+        renderer: meanSeaLevelRenderer
+      });
+
+      map.watch('loaded', () => {
+        props.setLoaded(map.loadStatus);
+        map.add(titles);
+        map.add(buildings);
+        map.add(meanSeaLevel);
+      });
+
+      map.watch('error', (error) => {
+        console.log(error)
+      });
+
+      mapView.when(() => {
+          mapView.ui.add(homeWidget, "top-left");
+          mapView.ui.add(scalebar, "bottom-right");
+          mapView.ui.add(compass, "top-left");
+          mapView.ui.add(layerlist, "top-right");
+          mapView.ui.add(basemapToggle, "bottom-left");
+      });
+
+      mapView.on("click", () => {
+        console.log(buildings.fields);
+      });
+
+      buildings.on('click', () => {
+        console.log(buildings)
+      });
+
+      return () => {
+        if(!!mapView) {
+          mapView.destroy();
+          mapView = null;
+        }
+      }
+    }
   }, []);
 
   return (

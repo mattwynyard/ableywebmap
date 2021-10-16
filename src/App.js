@@ -6,22 +6,32 @@ import CustomSpinner from "./CustomSpinner"
 function App() {
 
   const [status, setStatus] = useState("Loading");
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(true);
   
-  const setLoaded = () => {
-    setShow(false)
-    setStatus("Loaded")
+  /**
+   * Hides spinner when map is loaded, called mapper
+   * @param {string} status - The Map load status
+   */
+  const setLoaded = (status) => {
+    if (status === "loaded") {
+      setShow(false);
+    } else {
+      console.log(status)
+    }
   }
+
   return (
     <React.Fragment>
       <CustomNavbar></CustomNavbar>
-      <Mapper setLoaded={setLoaded}>
-        
-      </Mapper>
-      <CustomSpinner className="spinner" show={show} status={status}></CustomSpinner>
-    </React.Fragment>
-        
-    
+      <Mapper 
+        setLoaded={setLoaded}
+      />
+      <CustomSpinner 
+        className="spinner" 
+        show={show} 
+        status={status}
+      />
+    </React.Fragment>   
   );
 }
 
