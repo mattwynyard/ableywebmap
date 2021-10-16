@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import './App.css';
+import {buildingPopup, titlePopup} from './Popups.js'
 import WebMap from "@arcgis/core/WebMap";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
@@ -9,8 +10,8 @@ import Compass from "@arcgis/core/widgets/Compass";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
 import Basemap from "@arcgis/core/Basemap";
-import Renderer from "@arcgis/core/renderers/Renderer";
-import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
+// import Renderer from "@arcgis/core/renderers/Renderer";
+// import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 
 function Mapper(props) {
   const mapRef = useRef(null);
@@ -27,69 +28,19 @@ function Mapper(props) {
       });
 
       let buildingsRenderer = {
-        type: "simple",  // autocasts as new SimpleRenderer()
+        type: "simple", 
         symbol: { 
           type: "simple-fill", 
         },
       };
 
       let meanSeaLevelRenderer = {
-        type: "simple",  // autocasts as new SimpleRenderer()
+        type: "simple",  
         symbol: { 
           type: "simple-line", 
           color: "green"
         },
       };
-
-      const popup = {
-        "title": "{name}",
-        "content": [{
-          "type": "fields",
-          "fieldInfos": [
-            {
-              "fieldName": "building_id",
-              "label": "Id",
-              "isEditable": false,
-              "visible": true,
-              "format": null,
-              "stringFieldOption": "text-box"
-            },
-            {
-              "fieldName": "suburb_locality",
-              "label": "Suburb",
-              "isEditable": false,
-              "visible": true,
-              "format": null,
-              "stringFieldOption": "text-box"
-            },
-            {
-              "fieldName": "town_city",
-              "label": "Town/City",
-              "isEditable": false,
-              "visible": true,
-              "format": null,
-              "stringFieldOption": "text-box"
-            },
-            {
-              "fieldName": "use_",
-              "label": "Use",
-              "isEditable": false,
-              "visible": true,
-              "format": null,
-              "stringFieldOption": "text-box"
-            },
-            {
-              "fieldName": "Shape_Area",
-              "label": "Use",
-              "isEditable": false,
-              "visible": true,
-              "format": null,
-              "stringFieldOption": "text-box"
-            }
-        ]
-        }]
-
-      }
 
       let nzImageryBasemap = new Basemap({
         portalItem: {
@@ -130,8 +81,8 @@ function Mapper(props) {
           spatialReference: {
             wkid: 2193
           },
-          // outFields: [],
-          // popupTemplate: popup
+          outFields: ["title_no", "status", "type", "land_district", "issue_date", "estate_description"],
+          popupTemplate: titlePopup
         });
 
       let buildings = new FeatureLayer({
@@ -140,8 +91,8 @@ function Mapper(props) {
           wkid: 2193
         },
         renderer: buildingsRenderer,
-        outFields: ["building_id", "name", "suburb_locality", "town_city", "use_", "Shape__Area"],
-        popupTemplate: popup
+        outFields: ["building_id", "name", "suburb_locality", "town_city", "use_", "territorial_authority"],
+        popupTemplate: buildingPopup
       });
 
       let meanSeaLevel = new FeatureLayer({
@@ -166,6 +117,7 @@ function Mapper(props) {
 
       map.watch('failed', () => {
         props.setLoaded(map.loadStatus);
+        console.log("failed")
       });
 
       mapView.when(() => {
@@ -180,11 +132,11 @@ function Mapper(props) {
         console.log(event.mapPoint.x);
       });
 
-      buildings.when(() => {
-        buildings.fields.map((field) => {
-          console.log(field.name)
-        })
-      });
+      // titles.when(() => {
+      //   titles.fields.map((field) => {
+      //     console.log(field.name)
+      //   })
+      // });
 
       // mapView.on('pointer-move', (event) => {
       //   let point = mapView.toMap({x: event.x, y: event.y});
