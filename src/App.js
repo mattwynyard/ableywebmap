@@ -1,15 +1,13 @@
 import React, {useState} from "react";
-import {Card} from 'react-bootstrap';
 import './App.css';
 import Mapper from "./Mapper.js";
+import CustomFooter from "./CustomFooter";
 import CustomNavbar from "./CustomNavbar";
 import CustomSpinner from "./CustomSpinner"
 function App() {
 
   const [status, setStatus] = useState("Loading");
   const [show, setShow] = useState(true);
-  
-  const copyright = "© Matt Wynyard Ltd. All rights reserved 2021";
   
   /**
    * Hides spinner when map is loaded, called mapper
@@ -36,9 +34,7 @@ function App() {
         show={show} 
         status={status}
       />
-      <Card className="footer">
-        <Card.Body>{copyright}</Card.Body>
-      </Card>
+      <CustomFooter/>
     </React.Fragment>   
   );
 }
