@@ -41,6 +41,56 @@ function Mapper(props) {
         },
       };
 
+      const popup = {
+        "title": "{name}",
+        "content": [{
+          "type": "fields",
+          "fieldInfos": [
+            {
+              "fieldName": "building_id",
+              "label": "Id",
+              "isEditable": false,
+              "visible": true,
+              "format": null,
+              "stringFieldOption": "text-box"
+            },
+            {
+              "fieldName": "suburb_locality",
+              "label": "Suburb",
+              "isEditable": false,
+              "visible": true,
+              "format": null,
+              "stringFieldOption": "text-box"
+            },
+            {
+              "fieldName": "town_city",
+              "label": "Town/City",
+              "isEditable": false,
+              "visible": true,
+              "format": null,
+              "stringFieldOption": "text-box"
+            },
+            {
+              "fieldName": "use_",
+              "label": "Use",
+              "isEditable": false,
+              "visible": true,
+              "format": null,
+              "stringFieldOption": "text-box"
+            },
+            {
+              "fieldName": "Shape_Area",
+              "label": "Use",
+              "isEditable": false,
+              "visible": true,
+              "format": null,
+              "stringFieldOption": "text-box"
+            }
+        ]
+        }]
+
+      }
+
       let nzImageryBasemap = new Basemap({
         portalItem: {
           id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
@@ -80,6 +130,8 @@ function Mapper(props) {
           spatialReference: {
             wkid: 2193
           },
+          // outFields: [],
+          // popupTemplate: popup
         });
 
       let buildings = new FeatureLayer({
@@ -87,7 +139,9 @@ function Mapper(props) {
         spatialReference: {
           wkid: 2193
         },
-        renderer: buildingsRenderer
+        renderer: buildingsRenderer,
+        outFields: ["building_id", "name", "suburb_locality", "town_city", "use_", "Shape__Area"],
+        popupTemplate: popup
       });
 
       let meanSeaLevel = new FeatureLayer({
@@ -98,15 +152,20 @@ function Mapper(props) {
         renderer: meanSeaLevelRenderer
       });
 
-      map.watch('loaded', () => {
-        props.setLoaded(map.loadStatus);
-        map.add(titles);
-        map.add(buildings);
-        map.add(meanSeaLevel);
+      map.watch('loading', () => {
+        console.log(map.loadStatus);
       });
 
-      map.watch('error', (error) => {
-        console.log(error)
+      map.watch('loaded', () => {
+        props.setLoaded(map.loadStatus);
+        map.add(titles, 0);
+        map.add(buildings, 2);
+        map.add(meanSeaLevel, 1);
+  
+      });
+
+      map.watch('failed', () => {
+        props.setLoaded(map.loadStatus);
       });
 
       mapView.when(() => {
@@ -115,15 +174,22 @@ function Mapper(props) {
           mapView.ui.add(compass, "top-left");
           mapView.ui.add(layerlist, "top-right");
           mapView.ui.add(basemapToggle, "bottom-left");
+      })
+
+      mapView.on("click", (event) => {
+        console.log(event.mapPoint.x);
       });
 
-      mapView.on("click", () => {
-        console.log(buildings.fields);
+      buildings.when(() => {
+        buildings.fields.map((field) => {
+          console.log(field.name)
+        })
       });
 
-      buildings.on('click', () => {
-        console.log(buildings)
-      });
+      // mapView.on('pointer-move', (event) => {
+      //   let point = mapView.toMap({x: event.x, y: event.y});
+      //   console.log(`Easting: ${point.x} Northing: ${point.y}`)
+      // });
 
       return () => {
         if(!!mapView) {
