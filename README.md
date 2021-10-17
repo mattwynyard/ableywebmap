@@ -52,13 +52,14 @@ The Buildings and Titles layer is clickable and popup displayes the under-lying 
 
 Although I felt I understood loading pattern of the map and how to retreive from callbacks. I was not sure I was updating the state of the app.\
 correctly i.e. using a passing a callback as props from App container to the Map, as there is dependency issue warning for the setStatus callback.\
-Including setStatus in the dependency array removed this warning, the app renders twice on startup. Therefore setStatus was removed from dependency\ 
+Including setStatus in the dependency array removed this warning, the app renders more than once on startup. Therefore setStatus was removed from dependency 
 array as the warning was prefered over extra renders.  
 My main challenges was setting up the testing. I finally managed to remove errors once I learnt how to mock modules using jest. Although I'm 
 doubtful I am doing this correctly as there are still errors with the web map and am unable to solve in the available time frame. 
 
 # Improvements:
 I was also not to sure if the NTZM data needed to be re-projected to WGS84. I decided to stick with NZTM. In a production map I would re-project the
-layers data to WGS84 and use a web mercator map. Mainly because the public is more familiar with theses coordinates.
+layers data to WGS84 and use a web mercator map. Mainly because the public is more familiar with theses coordinates. But a production app could have both 
+NZTM and WGS84 available to the user.
 Some of the css needs tuning as I had a few issues alligning the footer and map. I would make css improvements so the map is can be tested for different
-screen sizes, (although I don't think this web app would work to well on mobile).
+screen sizes, (although I don't think this web app would work to well on mobile). Obviously I would add extra functionality to make this app useful.
