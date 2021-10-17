@@ -61,4 +61,5 @@ I was also not to sure if the NTZM data needed to be re-projected to WGS84. I de
 layers data to WGS84 and use a web mercator map. Mainly because the public is more familiar with theses coordinates. But a production app could have both 
 NZTM and WGS84 available to the user.
 Some of the css needs tuning as I had a few issues alligning the footer and map. I would make css improvements so the map is can be tested for different
-screen sizes, (although I don't think this web app would work to well on mobile). Obviously I would add extra functionality to make this app useful.
+screen sizes, (although I don't think this web app would work to well on mobile). To make this a useful app, I would add functionality to calculate 
+sea level insurance risk and how it effects the house price. 
