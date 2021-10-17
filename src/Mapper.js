@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef} from "react";
 import './App.css';
 import {buildingPopup, titlePopup} from './Popups.js';
 import { meanSeaLevelRenderer, buildingsRenderer} from "./Renderers";
@@ -18,6 +18,7 @@ function Mapper(props) {
 
   useEffect(() => {
     if (mapRef.current) {
+      console.log("render")
       const map = new WebMap({
           portalItem: { 
               id: "b8663956ce2a4e8d9631977ac9571ffc"
@@ -26,7 +27,6 @@ function Mapper(props) {
             wkid: 2193
           },
       });
-
       let nzImageryBasemap = new Basemap({
         portalItem: {
           id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
@@ -114,8 +114,8 @@ function Mapper(props) {
           mapView = null;
         }
       }
-    }
-  }, [setStatus]);
+    }   
+  }, []);
 
   return (
     <div className="map" ref={mapRef}>

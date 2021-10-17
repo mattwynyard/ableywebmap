@@ -20,5 +20,4 @@ const CustomSpinner = (props) => {
       );    
     }  
   }
-
   export default CustomSpinner;
