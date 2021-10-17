@@ -1,4 +1,4 @@
-# Abley Technical Assesment Property Viewer Webmap
+# Abley Technical Assesment ArcGIS Webmap
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -38,24 +38,23 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## Abley Technical Assesment Report
 
 This web application has been built using the ArcGIS Javascript API. The application loads an ArcGIS webmap from a web portal.\
-While the map is loading a spinner shows the status as loading.\
+While the map is loading a spinner shows the status as loading.\ The spinner dissapears once the map has loaded correctly.
 When the map is loaded a callback updates the application state to 'loaded'. Three feature layers are added to the map: 
 1. LINZ NZ Property titles.
 2. LINZ NZ Building outlines.
 3. LINZ NZ Mean high water.
 
 In the map view the widgets: home, metric scalebar, compass, layer list (which toggles visibilty of the layers) and basemap toggle 
-(which togglesbetween a sattelite and map) are available.
-The Buildings and Titles layer is clickable and popup displayes the under-lying data of the geometry.
+(which toggles between a sattelite and map) are available.
+The buildings and titles layers are clickable and a popup displayes the under-lying data of the geometry.
 
 # Challenges:
-
-Although I felt I understood loading pattern of the map and how to retreive from callbacks. I was not sure I was updating the state of the app.\
-correctly i.e. using a passing a callback as props from App container to the Map, as there is dependency issue warning for the setStatus callback.\
+Although I felt I understood loading pattern of the map and how to retreive from the load status. I was not sure I was updating the state of the app.\
+correctly i.e. passing a callback as props from App container to the Map, as there is dependency issue warning for the setStatus callback.\
 Including setStatus in the dependency array removed this warning, the app renders more than once on startup. Therefore setStatus was removed from dependency 
 array as the warning was prefered over extra renders.  
 My main challenges was setting up the testing. I finally managed to remove errors once I learnt how to mock modules using jest. Although I'm 
-doubtful I am doing this correctly as there are still errors with the web map and am unable to solve in the available time frame. 
+doubtful I am doing this correctly as there are still errors with the web map and am unable to solve in the available time frame.
 
 # Improvements:
 I was also not to sure if the NTZM data needed to be re-projected to WGS84. I decided to stick with NZTM. In a production map I would re-project the
