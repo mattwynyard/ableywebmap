@@ -18,7 +18,6 @@ function Mapper(props) {
 
   useEffect(() => {
     if (mapRef.current) {
-      console.log("render")
       const map = new WebMap({
           portalItem: { 
               id: "b8663956ce2a4e8d9631977ac9571ffc"
@@ -29,10 +28,9 @@ function Mapper(props) {
       });
       let nzImageryBasemap = new Basemap({
         portalItem: {
-          id: "689fb0c9670a4d71bf9f31dd03a4730c"  // WGS84 Streets Vector webmap
+          id: "689fb0c9670a4d71bf9f31dd03a4730c"
         }
       });
-
       let mapView = new MapView({
           map,
           container: mapRef.current,
@@ -41,7 +39,6 @@ function Mapper(props) {
             },            
           zoom: 8,
       });
-
       let scalebar = new ScaleBar({
           view: mapView,
           unit: "metric",
@@ -69,7 +66,6 @@ function Mapper(props) {
           outFields: ["title_no", "status", "type", "land_district", "issue_date", "estate_description"],
           popupTemplate: titlePopup
         });
-
       let buildings = new FeatureLayer({
         url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Building_Outlines/FeatureServer",
         spatialReference: {
@@ -79,7 +75,6 @@ function Mapper(props) {
         outFields: ["building_id", "name", "suburb_locality", "town_city", "use_", "territorial_authority"],
         popupTemplate: buildingPopup
       });
-
       let meanSeaLevel = new FeatureLayer({
         url: "https://services7.arcgis.com/jI87xPT7G1AGV8Uo/ArcGIS/rest/services/LINZ_NZ_Coastline_Mean_High_Water/FeatureServer/0",
         spatialReference: {
@@ -122,5 +117,4 @@ function Mapper(props) {
     </div>
   );
 }
-
 export default Mapper;

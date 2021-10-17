@@ -1,6 +1,8 @@
 import React from 'react';
 import CustomNavbar from './CustomNavbar';
 import App from './App';
+import CustomFooter from "./CustomFooter";
+import CustomSpinner from "./CustomSpinner";
 import { render} from '@testing-library/react';
 jest.mock("@arcgis/core/WebMap", () => ({
   WebMap: () => ({})
@@ -32,10 +34,27 @@ jest.mock("@arcgis/core/Basemap", () => ({
 }));
 
 describe('App component', () => {
-  test('it mounts', () => {
-    const wrapper = render(<App />)
-    const navWrapper = render(<CustomNavbar />)
+  test('it renders', () => {
+    const wrapper = render(<App />) 
     //expect wrapper.state.status = "loaded"
+  });
+ });
+
+ describe('Nav component', () => {
+  test('it renders', () => {
+    const wrapper = render(<CustomNavbar />)
+  });
+ });
+
+ describe('Spinner component', () => {
+  test('it renders', () => {
+    const wrapper = render(<CustomSpinner />)
+  });
+ });
+
+ describe('Footer component', () => {
+  test('it renders', () => {
+    const wrapper = render(<CustomFooter />)
   });
  });
 

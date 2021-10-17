@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Abley Technical Assesment Property Viewer Webmap
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Install
+
+After cloning project run:
+
+### `npm install`
 
 ## Available Scripts
 
@@ -29,42 +35,30 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Abley Technical Assesment Report
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This web application has been built using the ArcGIS Javascript API. The application loads an ArcGIS webmap from a web portal.\
+While the map is loading a spinner shows the status as loading.\
+When the map is loaded a callback updates the application state to 'loaded'. Three feature layers are added to the map: \
+1. LINZ NZ Property titles.\
+2. LINZ NZ Building outlines.\
+3. LINZ NZ Mean high water.\
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In the map view the widgets: home, metric scalebar, compass, layer list (which toggles visibilty of the layers) and basemap toggle\ 
+(which togglesbetween a sattelite and map) are available.\ 
+The Buildings and Titles layer is clickable and popup displayes the under-lying data of the geometry.\
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Challenges:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Although I felt I understood loading pattern of the map and how to retreive from callbacks. I was not sure I was updating the state of the app.\
+correctly i.e. using a passing a callback as props from App container to the Map, as there is dependency issue warning for the setStatus callback.\
+Including setStatus in the dependency array removed this warning, the app renders twice on startup. Therefore setStatus was removed from dependency\ 
+array as the warning was prefered over extra renders.\  
+My main challenges was setting up the testing. I finally managed to remove errors once I learnt how to mock modules using jest. Although I'm\ 
+doubtful I am doing this correctly as there are still errors with the web map and am unable to solve in the available time frame.\ 
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Improvements:
+I was also not to sure if the NTZM data needed to be re-projected to WGS84. I decided to stick with NZTM. In a production map I would re-project the\ 
+layers data to WGS84 and use a web mercator map. Mainly because the public is more familiar with theses coordinates.\
+Some of the css needs tuning as I had a few issues alligning the footer and map. I would make css improvements so the map is can be tested for different\
+screen sizes, (although I don't think this web app would work to well on mobile).\ 
