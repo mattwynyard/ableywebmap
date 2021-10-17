@@ -97,6 +97,7 @@ function Mapper(props) {
 
       map.watch('failed', () => {
         setStatus(map.loadStatus);
+        console.log('failed')
       });
 
       mapView.when(() => {

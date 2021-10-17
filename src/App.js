@@ -3,7 +3,8 @@ import "./App.css";
 import Mapper from "./Mapper.js";
 import CustomFooter from "./CustomFooter";
 import CustomNavbar from "./CustomNavbar";
-import CustomSpinner from "./CustomSpinner"
+import CustomSpinner from "./CustomSpinner";
+
 function App() {
 
   const [status, setStatus] = useState("Loading");
@@ -16,6 +17,7 @@ function App() {
   const setLoadStatus = (status) => {
     if (status === "loaded") {
       setShow(false);
+      setStatus(status);
     } else {
       setStatus(status);
     }
