@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './App.css';
+import "./App.css";
 import Mapper from "./Mapper.js";
 import CustomFooter from "./CustomFooter";
 import CustomNavbar from "./CustomNavbar";

@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly react-test-renderer 1`] = `
+<Navbar
+  bg="light"
+  className="navbar"
+  collapseOnSelect={false}
+  expand="lg"
+  variant="light"
+>
+  <NavbarBrand
+    href="#home"
+  >
+    <img
+      alt="logo"
+      className="brand"
+      height="30"
+      src="logo192.png"
+      width="30"
+    />
+       Property Viewer
+  </NavbarBrand>
+  <NavbarToggle
+    aria-controls="basic-navbar-nav"
+    label="Toggle navigation"
+  />
+  <NavbarCollapse
+    id="basic-navbar-nav"
+  >
+    <Nav
+      className="me-auto"
+      fill={false}
+      justify={false}
+    >
+      <NavLink
+        disabled={false}
+        href="#home"
+      >
+        Home
+      </NavLink>
+      <NavDropdown
+        id="basic-nav-dropdown"
+        title="View"
+      >
+        <DropdownItem
+          href="#action/3.1"
+        >
+          Latest
+        </DropdownItem>
+        <DropdownItem
+          href="#action/3.2"
+        >
+          My Favorites
+        </DropdownItem>
+        <DropdownItem
+          href="#action/3.3"
+        >
+          Settings
+        </DropdownItem>
+        <DropdownDivider
+          role="separator"
+        />
+        <DropdownItem
+          href="#action/3.4"
+        >
+          Submit Viewing Request
+        </DropdownItem>
+      </NavDropdown>
+      <NavLink
+        className="login"
+        disabled={false}
+        href="#home"
+      >
+        Login
+      </NavLink>
+    </Nav>
+  </NavbarCollapse>
+</Navbar>
+`;
