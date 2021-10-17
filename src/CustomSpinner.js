@@ -1,4 +1,5 @@
 import {Spinner} from 'react-bootstrap';
+import React from 'react';
 
 const CustomSpinner = (props) => {
     if (props.show) {
